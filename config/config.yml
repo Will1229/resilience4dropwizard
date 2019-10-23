@@ -1,0 +1,26 @@
+server:
+  type: simple
+  applicationContextPath: /app
+  adminContextPath: /app/admin
+  connector:
+    type: http
+    port: 8080
+
+resilience4j:
+  circuitBreakers:
+    - instance: circuitBreaker1
+      failureRateThreshold: 20
+      waitDurationInOpenState: 30s
+      permittedNumberOfCallsInHalfOpenState: 1
+      enableAutomaticTransitionFromOpenToHalfOpen: false
+    - instance: circuitBreaker2
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED
+      minimumNumberOfCalls: 20
+      waitDurationInOpenState: 50s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+      recordFailurePredicate:
+    - instance: circuitBreaker3
